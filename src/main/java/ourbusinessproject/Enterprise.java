@@ -84,5 +84,8 @@ public class Enterprise {
         }
         projects.add(project);
     }
+    public void removeProject(Project project) {
+    	projects.remove(project);
+    }
 
 }

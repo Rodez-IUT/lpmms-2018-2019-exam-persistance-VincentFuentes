@@ -17,6 +17,9 @@ public class EnterpriseProjectService {
 
     public Project saveProjectForEnterprise(Project project, Enterprise enterprise) {
         saveEnterprise(enterprise);
+        if (project.getEnterprise() != null) {
+        	project.getEnterprise().removeProject(project);
+        }
         project.setEnterprise(enterprise);
         enterprise.addProject(project);
         entityManager.persist(project);
@@ -25,11 +28,11 @@ public class EnterpriseProjectService {
     }
 
     public Enterprise saveEnterprise(Enterprise enterprise) {
-        entityManager.persist(enterprise);
-        entityManager.flush();
-        return enterprise;
+    	Enterprise newEnterprise = entityManager.merge(enterprise);
+    	entityManager.flush();
+    	return newEnterprise;
     }
-
+    
     public Project findProjectById(Long id) {
         return entityManager.find(Project.class, id);
     }
